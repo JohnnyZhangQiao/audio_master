@@ -1,0 +1,9 @@
+/node_modules/
+/dist/
+.vscode
+.idea
+.fleet
+coverage/
+stats.html
+/src/types/global/auto-imports.d.ts
+/src/types/global/components.d.ts
