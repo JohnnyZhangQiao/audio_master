@@ -1,5 +1,4 @@
 import axios from 'axios';
-import cloneDeep from 'lodash/cloneDeep';
 import { NotifyPlugin } from 'tdesign-vue-next';
 
 import { eventStore } from '@/store/event';
@@ -43,26 +42,6 @@ function initInterceptors() {
    */
   axiosInstance.interceptors.request.use((config) => {
     useEvent.event.loading = true;
-    const urlParams = new URLSearchParams(location.search);
-
-    // 模拟指定用户
-    if (ENV.NODE_ENV !== 'production' && (ENV.DEBUG === 1 || Number(urlParams.get('debug')) === 1)) {
-      const structConfig = cloneDeep(config);
-
-      structConfig.method?.match(/get/i)
-        ? (structConfig.params = {
-            ...structConfig.params,
-            debug: 1,
-            staffname: ENV.DEBUG_STAFF_NAME || urlParams.get('staffname'),
-          })
-        : (structConfig.data = {
-            ...structConfig.data,
-            debug: 1,
-            staffname: ENV.DEBUG_STAFF_NAME || urlParams.get('staffname'),
-          });
-
-      return structConfig;
-    }
 
     return config;
   });
