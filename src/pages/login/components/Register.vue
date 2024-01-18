@@ -17,11 +17,11 @@
       </t-form-item>
     </template>
 
-    <template v-if="type === 'email'">
-      <t-form-item name="email">
-        <t-input v-model="formData.email" type="text" size="large" placeholder="请输入您的邮箱">
+    <template v-if="type === 'name'">
+      <t-form-item name="name">
+        <t-input v-model="formData.name" type="text" size="large" placeholder="请输入您的账号">
           <template #prefix-icon>
-            <t-icon name="mail" />
+            <t-icon name="user" />
           </template>
         </t-input>
       </t-form-item>
@@ -61,7 +61,7 @@ import { MessagePlugin } from 'tdesign-vue-next';
 
 const INITIAL_DATA = {
   phone: '',
-  email: '',
+  name: '',
   password: '',
   verifyCode: '',
   checked: false,
@@ -69,15 +69,23 @@ const INITIAL_DATA = {
 
 const FORM_RULES: Record<string, FormRule[]> = {
   phone: [{ required: true, message: '手机号必填', type: 'error' }],
-  email: [
-    { required: true, message: '邮箱必填', type: 'error' },
-    { email: true, message: '请输入正确的邮箱', type: 'warning' },
+  name: [
+    { required: true, message: '账号必填', type: 'error' },
+    { pattern: /^[a-zA-Z0-9]+$/, message: '账号不包含中文和标点符号', type: 'error' },
   ],
   password: [{ required: true, message: '密码必填', type: 'error' }],
   verifyCode: [{ required: true, message: '验证码必填', type: 'error' }],
+  checked: [
+    {
+      validator: (val) => {
+        if (!val) return { result: false, message: '请先勾选同意协议', type: 'error' };
+        return { result: true, message: '', type: 'success' };
+      },
+    },
+  ],
 };
 
-const type = ref('email');
+const type = ref('name');
 
 const form = ref();
 const formData = ref({ ...INITIAL_DATA });
@@ -88,10 +96,6 @@ const emit = defineEmits(['registerSuccess']);
 
 const onSubmit = (ctx: SubmitContext) => {
   if (ctx.validateResult === true) {
-    if (!formData.value.checked) {
-      MessagePlugin.error('请同意TDesign服务协议和TDesign 隐私声明');
-      return;
-    }
     MessagePlugin.success('注册成功');
     emit('registerSuccess');
   }
