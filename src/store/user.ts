@@ -5,7 +5,7 @@ type TUser = { name: string };
 // 用户store
 export const userStore = defineStore('userStore', () => {
   const state = reactive<TUser>({
-    name: 'admin',
+    name: '',
   });
 
   /**

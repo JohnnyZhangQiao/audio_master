@@ -55,8 +55,8 @@ function initInterceptors() {
       const { data } = response;
       useEvent.event.loading = false;
 
-      if (response.status !== 200) {
-        errorHandle(response, '请求出错');
+      if (response.status !== 200 || data?.err_no !== 0) {
+        errorHandle(response, data?.err_msg || '请求出错');
         return Promise.reject(data);
       }
       return data;

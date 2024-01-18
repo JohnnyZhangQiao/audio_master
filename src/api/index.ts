@@ -1,1 +1,3 @@
-export default {};
+import login from './login';
+
+export default { login };

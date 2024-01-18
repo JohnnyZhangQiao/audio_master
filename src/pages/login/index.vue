@@ -20,7 +20,7 @@
   </div>
 </template>
 
-<script setup lang="tsx" name="LoginIndex">
+<script setup lang="tsx" name="Login">
 import Login from './components/Login.vue';
 import Register from './components/Register.vue';
 

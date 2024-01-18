@@ -1,6 +1,6 @@
 <template>
   <t-header>
-    <t-head-menu theme="dark" :style="props.style">
+    <t-head-menu :style="props.style">
       <template #logo>
         <!--        <div class="logo-style" @click="router.push('/annotation')">-->
         <!--          <img src="@/assets/images/title.webp" alt="" />-->
@@ -8,27 +8,16 @@
         <!--        </div>-->
         <div class="logo-style">
           <a :href="portalSite"><img src="@/assets/images/title.webp" alt="" /></a>
-          <div v-if="env?.NODE_ENV === 'test'" class="platform-env">测试</div>
         </div>
       </template>
       <template #operations>
         <div v-show="useEvent.event.loading" class="icon-style">
           <t-icon name="loading" />
         </div>
-        <div v-show="!props.toolsHidden.includes('notification')">
-          <t-popup placement="bottom-right" show-arrow trigger="click">
-            <div class="icon-style">
-              <t-icon name="notification-filled" />
-            </div>
-            <template #content>
-              <MessageList />
-            </template>
-          </t-popup>
-        </div>
         <t-dropdown :options="options" :min-column-width="150">
           <div class="user-style">
-            <img class="avatar-style" :src="geneAvatar(useUser.state.EngName)" />
-            <span>{{ useUser.state.EngName }}</span>
+            <t-icon class="avatar-style" name="user-circle" />
+            <span>{{ useUser.state.name }}</span>
           </div>
         </t-dropdown>
       </template>
@@ -37,12 +26,10 @@
 </template>
 
 <script setup lang="tsx" name="LayoutHeader">
-import type { CSSProperties } from 'vue';
 import { useRouter } from 'vue-router';
-
-import MessageList from '@/components/notification/MessageList.vue';
 import { eventStore, userStore } from '@/store';
-import { geneAvatar } from '@/utils/image';
+import { logout } from '@/utils/userLogin';
+import type { CSSProperties } from 'vue';
 
 interface IProps {
   /**
@@ -65,17 +52,11 @@ const useEvent = eventStore();
 const options = computed(() => {
   return [
     {
-      content: '权限中心',
+      content: '退出登录',
       value: 1,
       onClick: () => {
-        router.push('/auth');
-      },
-    },
-    {
-      content: '工具库',
-      value: 2,
-      onClick: () => {
-        router.push('/annotation');
+        logout();
+        router.push('/login');
       },
     },
   ];
@@ -98,17 +79,6 @@ const portalSite = location.origin;
     top: 50%;
     transform: translate(10px, -50%);
   }
-  .platform-env {
-    position: absolute;
-    right: 0;
-    top: 10px;
-    padding: 0 5px;
-    background-color: #774e35;
-    font-size: 12px;
-    line-height: 17px;
-    font-weight: bold;
-    border-radius: 3px;
-  }
 }
 .icon-style {
   padding: 8px;
@@ -116,7 +86,7 @@ const portalSite = location.origin;
   font-size: 20px;
   border-radius: 3px;
   &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.05);
     cursor: pointer;
   }
 }
@@ -125,13 +95,14 @@ const portalSite = location.origin;
   line-height: 0;
   border-radius: 3px;
   .avatar-style {
-    margin-right: 10px;
-    width: 30px;
+    margin: 3px 10px 3px 0;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     vertical-align: middle;
   }
   &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.05);
     cursor: pointer;
   }
 }

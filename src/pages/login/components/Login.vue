@@ -8,8 +8,8 @@
     @submit="onSubmit"
   >
     <template v-if="type === 'password'">
-      <t-form-item name="account">
-        <t-input v-model="formData.account" size="large" placeholder="请输入用户名">
+      <t-form-item name="user">
+        <t-input v-model="formData.user" size="large" placeholder="请输入用户名">
           <template #prefix-icon>
             <t-icon name="user" />
           </template>
@@ -45,48 +45,30 @@
   </t-form>
 </template>
 
-<script setup lang="tsx">
+<script setup lang="tsx" name="login">
+import { useRouter } from 'vue-router';
+import { login } from '@/utils/userLogin';
 import type { FormInstanceFunctions, FormRule, SubmitContext } from 'tdesign-vue-next';
-import { MessagePlugin } from 'tdesign-vue-next';
-import { useRoute, useRouter } from 'vue-router';
-
-const INITIAL_DATA = {
-  account: 'admin',
-  password: 'admin',
-  checked: false,
-};
 
 const FORM_RULES: Record<string, FormRule[]> = {
-  account: [{ required: true, type: 'error' }],
+  user: [{ required: true, type: 'error' }],
   password: [{ required: true, type: 'error' }],
 };
-
 const type = ref('password');
-
 const form = ref<FormInstanceFunctions>();
-const formData = ref({ ...INITIAL_DATA });
+const formData = ref({ user: '', password: '' });
 const showPsw = ref(false);
-
-const switchType = (val: string) => {
-  type.value = val;
-};
-
 const router = useRouter();
-const route = useRoute();
 
+/**
+ * 登录
+ * @param ctx
+ */
 const onSubmit = async (ctx: SubmitContext) => {
   if (ctx.validateResult === true) {
-    try {
-      await userStore.login(formData.value);
-
-      MessagePlugin.success('登录成功');
-      const redirect = route.query.redirect as string;
-      const redirectUrl = redirect ? decodeURIComponent(redirect) : '/dashboard';
-      router.push(redirectUrl);
-    } catch (e) {
-      console.log(e);
-      MessagePlugin.error(e.message);
-    }
+    login(formData.value.user, formData.value.password)
+      .then(() => router.push('tts/creation'))
+      .catch();
   }
 };
 </script>

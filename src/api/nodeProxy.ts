@@ -1,4 +1,4 @@
-const testServer = 'test.com';
+const testServer = '43.138.27.56';
 const productionServer = 'production.com';
 const localServer = 'localhost';
 

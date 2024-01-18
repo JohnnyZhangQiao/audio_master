@@ -2,12 +2,7 @@
   <router-view />
 </template>
 
-<script lang="tsx" setup name="App">
-import { getIoaInfo } from '@/utils/userLogin';
-
-// 获取用户信息
-getIoaInfo();
-</script>
+<script lang="tsx" setup name="App"></script>
 
 <style>
 #App {

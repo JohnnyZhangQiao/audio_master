@@ -15,7 +15,7 @@ for (const path in modules) {
 export const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/index',
+    redirect: '/tts',
   },
   ...moduleRoutes,
   ...basicRoutes,

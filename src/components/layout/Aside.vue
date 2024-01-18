@@ -2,7 +2,6 @@
   <t-menu
     class="aside-style"
     width="200px"
-    theme="dark"
     :collapsed="collapsed"
     :default-expanded="defaultExpanded.length ? defaultExpanded : router.currentRoute.value.matched.map((r) => r.path)"
     :value="menuActiveValue"
@@ -96,9 +95,7 @@ const SubMenuRender = ({ item }: { item: TRouter }) => {
 @import '@/assets/less/globalVar.less';
 
 .aside-style {
-  background-color: @layout-bg-color !important;
-  color: @layout-font-color;
-  border-top: 1px solid #4b4b4b;
+  border-top: 1px solid var(--td-component-stroke);
   flex-shrink: 0;
   .search-input {
     margin: 0 7px;

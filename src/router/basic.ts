@@ -2,6 +2,11 @@ import type { RouteRecordRaw } from 'vue-router';
 
 export const basicRoutes: Array<RouteRecordRaw> = [
   {
+    name: 'login',
+    component: () => import('@/pages/login/index.vue'),
+    path: '/login',
+  },
+  {
     name: '403',
     component: () => import('@/pages/result/403.vue'),
     path: '/403',

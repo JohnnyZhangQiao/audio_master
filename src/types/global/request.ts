@@ -16,5 +16,5 @@ export interface IRequestParams extends AxiosRequestConfig {
  * 请求响应类型
  */
 export interface IRequestResponse<T = any> extends AxiosResponse {
-  data: T;
+  data: { err_no: number; err_msg?: string } & T;
 }
