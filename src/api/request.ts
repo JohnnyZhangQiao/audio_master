@@ -53,12 +53,23 @@ function initInterceptors() {
       useEvent.event.loading = false;
 
       const { data } = response;
-      useEvent.event.loading = false;
+      const httpConfig: IRequestParams = response.config;
 
-      if (response.status !== 200 || data?.err_no !== 0) {
+      // 状态码判断
+      if (response.status !== 200) {
+        errorHandle(response, '请求出错');
+        return Promise.reject(data);
+      }
+
+      // 非标准化数据
+      if (httpConfig.notClassified) return data;
+
+      // server错误码判断
+      if (data?.err_no !== 0) {
         errorHandle(response, data?.err_msg || '请求出错');
         return Promise.reject(data);
       }
+
       return data;
     },
     // 请求失败
