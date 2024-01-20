@@ -7,7 +7,7 @@ export default {
    */
   getPcmBuffer: (options?: IRequestParams): Promise<string> =>
     request.axiosInstance({
-      url: `/tts?codec=mav&pid=23476&key=F55C87D4-95C1-4E45-8A2A-B271EAE7BE93&voice_type=1`,
+      url: `/tts`,
       method: 'GET',
       desc: '合成音频',
       notClassified: true,

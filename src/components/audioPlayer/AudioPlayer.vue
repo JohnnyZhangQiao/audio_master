@@ -1,6 +1,6 @@
 <template>
   <section style="height: 52px">
-    <Player class="audio-player" :volume="props.volume" :style="props.styles" :paused="isPaused">
+    <Player ref="playerRef" class="audio-player" :volume="props.volume" :style="props.styles">
       <Audio>
         <source :data-src="props.url" />
       </Audio>
@@ -46,10 +46,22 @@ interface IProps {
 const props = withDefaults(defineProps<IProps>(), {
   styles: () => ({}),
   url: () => '',
-  volume: () => 50,
+  volume: () => 100,
   autoplay: () => false,
 });
+
+const playerRef = ref<typeof Player>();
 const isPaused = ref(!props.autoplay);
+watch(
+  () => props.url,
+  () => {
+    setTimeout(() => {
+      playerRef.value?.canPlay().then(() => {
+        playerRef.value?.play();
+      });
+    }, 200);
+  },
+);
 </script>
 
 <style lang="less" scoped>
@@ -58,12 +70,11 @@ const isPaused = ref(!props.autoplay);
   --vm-color-white-200: rgba(0, 0, 0, 0.4);
   .controller {
     --vm-controls-bg: #fafafa;
-    --vm-controls-border-radius: 40px;
 
     //icon
     .player-icon,
     .player-volume {
-      --vm-icon-fill: #1890ff;
+      --vm-icon-fill: #0052d9;
       transform: scale(0.8);
       --vm-icon-transform: scale(1.2);
       --vm-control-focus-bg: #ececec;
@@ -78,16 +89,19 @@ const isPaused = ref(!props.autoplay);
     .player-bar {
       flex: calc(100% - 320px);
       margin: 0 20px;
-      --vm-slider-value-color: #1890ff;
-      --vm-slider-thumb-bg: #1890ff;
+      --vm-slider-value-color: #0052d9;
+      --vm-slider-thumb-bg: #0052d9;
       --vm-slider-track-height: 5px;
     }
 
     //音量
     .player-volume {
-      --vm-slider-value-color: #1890ff;
-      --vm-slider-thumb-bg: #1890ff;
+      --vm-slider-value-color: #0052d9;
+      --vm-slider-thumb-bg: #0052d9;
     }
+  }
+  :deep(.player-bar) {
+    pointer-events: none;
   }
 }
 </style>

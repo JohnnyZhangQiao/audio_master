@@ -25,7 +25,7 @@ const ttsRoutes: RouteRecordRaw = {
       name: 'creation',
       component: () => import('@/pages/tts/creation/index.vue'),
       meta: {
-        navigation: '对话合成',
+        navigation: '语音合成',
         icon: AudioIcon,
         requireAuth: true,
       },

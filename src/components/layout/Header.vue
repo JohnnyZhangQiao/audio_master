@@ -7,7 +7,7 @@
         <!--          <div v-if="env?.NODE_ENV === 'test'" class="platform-env">测试</div>-->
         <!--        </div>-->
         <div class="logo-style">
-          <a :href="portalSite"><img src="@/assets/images/title.webp" alt="" /></a>
+          <a :href="portalSite"><img src="@/assets/images/title.png" alt="" /></a>
         </div>
       </template>
       <template #operations>
@@ -74,7 +74,7 @@ const portalSite = location.origin;
     cursor: pointer;
   }
   img {
-    height: 20px;
+    height: 30px;
     position: absolute;
     top: 50%;
     transform: translate(10px, -50%);
