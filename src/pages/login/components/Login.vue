@@ -35,7 +35,7 @@
 
       <div class="check-container remember-pwd">
         <t-checkbox>记住账号</t-checkbox>
-        <span class="tip">忘记密码？</span>
+        <span class="tip" @click="() => emit('forgetPassword')">忘记密码？</span>
       </div>
     </template>
 
@@ -59,6 +59,7 @@ const form = ref<FormInstanceFunctions>();
 const formData = ref({ user: '', password: '' });
 const showPsw = ref(false);
 const router = useRouter();
+const emit = defineEmits(['forgetPassword']);
 
 /**
  * 登录
