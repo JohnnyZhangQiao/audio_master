@@ -9,7 +9,7 @@
     />
     <t-row :gutter="[10, 0]" align="center" style="height: 52px">
       <t-col :span="2">
-        <t-select v-model="voiceType" :options="TIMBRE_MAPPER" @change="() => (isEdited = true)" />
+        <t-select v-model="voiceType" :options="filterTimbre" @change="() => (isEdited = true)" />
       </t-col>
       <t-col :span="1">
         <t-button :loading="loading" :disabled="!text || !isEdited" @click="gene">合成</t-button>
@@ -25,13 +25,13 @@
 import request from '@/api';
 import AudioPlayer from '@/components/audioPlayer/AudioPlayer.vue';
 import { MessagePlugin } from 'tdesign-vue-next';
+import { userStore } from '@/store';
 
 const text = ref('');
-const voiceType = ref(0);
 const loading = ref(false);
 const url = ref('');
 const isEdited = ref(false);
-
+const useUser = userStore();
 const TIMBRE_MAPPER = [
   {
     value: 0,
@@ -71,13 +71,23 @@ const TIMBRE_MAPPER = [
   },
   {
     value: 9,
-    label: '音色9',
+    label: '德刚',
   },
   {
     value: 10,
-    label: '音色10',
+    label: '德华',
+  },
+  {
+    value: 11,
+    label: '包老师',
+  },
+  {
+    value: 12,
+    label: '阿乐',
   },
 ];
+const filterTimbre = computed(() => TIMBRE_MAPPER.filter((item) => useUser.state.roles.includes(item.value)));
+const voiceType = ref(filterTimbre.value[0].value);
 
 const geneAudio = () => {
   if (loading.value) return;

@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
 
-type TUser = { name: string };
+type TUser = { name: string; roles: number[] };
 
 // 用户store
 export const userStore = defineStore('userStore', () => {
   const state = reactive<TUser>({
     name: '',
+    roles: [],
   });
 
   /**
