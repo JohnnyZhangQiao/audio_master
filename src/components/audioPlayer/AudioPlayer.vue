@@ -9,6 +9,7 @@
           <PlaybackControl hide-tooltip class="player-icon" />
           <TimeProgress class="time-progress" separator="/" />
           <ScrubberControl class="player-bar" />
+          <img class="download-icon" :src="downloadIcon" alt="" @click="downloadWav" />
           <VolumeControl class="player-volume" hide-tooltip />
         </Controls>
       </Ui>
@@ -19,7 +20,7 @@
 <script setup lang="tsx" name="audio-player">
 // VimeJs API https://vimejs.com/
 import '@vime/core/themes/default.css';
-
+import downloadIcon from '@/assets/images/download.svg';
 import {
   Audio,
   Controls,
@@ -62,6 +63,34 @@ watch(
     }, 200);
   },
 );
+
+function download(href: string, filename = '') {
+  const a = document.createElement('a');
+  a.download = filename;
+  a.href = href;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+function downloadFile(url: string, filename = '') {
+  fetch(url, {
+    headers: new Headers({
+      Origin: window.location.origin,
+    }),
+    mode: 'cors',
+  })
+    .then((res) => res.blob())
+    .then((blob) => {
+      const blobUrl = window.URL.createObjectURL(blob);
+      download(blobUrl, filename);
+      window.URL.revokeObjectURL(blobUrl);
+    });
+}
+
+const downloadWav = () => {
+  downloadFile(props.url, `音频_${Date.now()}`);
+};
 </script>
 
 <style lang="less" scoped>
@@ -92,6 +121,19 @@ watch(
       --vm-slider-value-color: #0052d9;
       --vm-slider-thumb-bg: #0052d9;
       --vm-slider-track-height: 5px;
+    }
+
+    //下载
+    .download-icon {
+      margin: 0 5px;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      &:hover {
+        background-color: #ececec;
+        box-shadow: 0 0 0 3px #ececec;
+        border-radius: 1px;
+      }
     }
 
     //音量

@@ -34,10 +34,6 @@ const isEdited = ref(false);
 const useUser = userStore();
 const TIMBRE_MAPPER = [
   {
-    value: 0,
-    label: '请选择',
-  },
-  {
     value: 1,
     label: '英语_女声',
   },
@@ -86,7 +82,14 @@ const TIMBRE_MAPPER = [
     label: '阿乐',
   },
 ];
-const filterTimbre = computed(() => TIMBRE_MAPPER.filter((item) => useUser.state.roles.includes(item.value)));
+const filterTimbre = computed(() =>
+  [
+    {
+      value: 0,
+      label: '请选择',
+    },
+  ].concat(TIMBRE_MAPPER.filter((item) => useUser.state.roles.includes(item.value))),
+);
 const voiceType = ref(filterTimbre.value[0].value);
 
 const geneAudio = () => {
@@ -117,7 +120,7 @@ const gene = () => {
     return;
   }
   isEdited.value = false;
-  url.value = `http://43.138.27.56:80/tts?codec=mp3&pid=123&key=tencent&voice_type=${
+  url.value = `http://${ENV.TARGET_URL}/tts?codec=mp3&pid=123&key=tencent&voice_type=${
     voiceType.value
   }&text=${encodeURIComponent('<speak>' + text.value + '</speak>')}`;
 };
